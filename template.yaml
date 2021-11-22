@@ -2,29 +2,31 @@ apiVersion: backstage.io/v1beta2
 kind: Template
 # some metadata about the template itself
 metadata:
-  name: Golang-boilerplate
-  title: Golang-boilerplate
-  description: Boilerplate for golang applications
+  name: golang-starter
+  title: Golang Microservice
+  description: Create a Golang repo with this template built by members of the Go community
   tags:
-    - go
     - experimental
+    - go
 spec:
-  owner: CloudOps | PlatformOps
+  owner: web@example.com
   type: service
 
   # these are the steps which are rendered in the frontend with the form input
   parameters:
-    - title: Fill in some stepspublish
+    - title: Provide some simple information
       required:
-        - name
+        - component_id
+        - owner
       properties:
-        name:
+        component_id:
           title: Name
           type: string
           description: Unique name of the component
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this website is for.
         owner:
           title: Owner
           type: string
@@ -53,7 +55,9 @@ spec:
       input:
         url: ./template
         values:
-          name: '{{ parameters.name }}'
+          component_id: '{{ parameters.component_id }}'
+          description: '{{ parameters.description }}'
+          destination: '{{ parseRepoUrl parameters.repoUrl }}'
           owner: '{{ parameters.owner }}'
 
     - id: fetch-docs
@@ -68,7 +72,7 @@ spec:
       action: publish:github
       input:
         allowedHosts: ['github.com']
-        description: 'This is {{ parameters.name }}'
+        description: 'This is {{ parameters.component_id }}'
         repoUrl: '{{ parameters.repoUrl }}'
 
     - id: register
@@ -78,7 +82,6 @@ spec:
         repoContentsUrl: '{{ steps.publish.output.repoContentsUrl }}'
         catalogInfoPath: '/catalog-info.yaml'
 
-  # some outputs which are saved along with the job for use in the frontend
   output:
     remoteUrl: '{{ steps.publish.output.remoteUrl }}'
     entityRef: '{{ steps.register.output.entityRef }}'
