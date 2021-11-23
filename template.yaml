@@ -1,18 +1,15 @@
 apiVersion: backstage.io/v1beta2
 kind: Template
-# some metadata about the template itself
 metadata:
-  name: golang-starter
-  title: Golang Microservice
-  description: Create a Golang repo with this template built by members of the Go community
+  name: Go-lang-service
+  title: Golang service
+  description: Create a new golang service
   tags:
-    - experimental
     - go
+    - experimental
 spec:
   owner: web@example.com
-  type: service
-
-  # these are the steps which are rendered in the frontend with the form input
+  type: website
   parameters:
     - title: Provide some simple information
       required:
@@ -33,12 +30,12 @@ spec:
           description: Owner of the component
           ui:field: OwnerPicker
           ui:options:
-            allowedKinds:
+            allowedKinds: 
               - Group
-    - title: Choose a location
+    - title: Choose a location  
       required:
         - repoUrl
-      properties:
+      properties: 
         repoUrl:
           title: Repository Location
           type: string
@@ -46,26 +43,19 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-
-  # here's the steps that are executed in series in the scaffolder backend
   steps:
-    - id: fetch-base
-      name: Fetch Base
+    - id: template
+      name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ./template
+        url: ./skeleton
+        copyWithoutRender:
+          - .github/workflows/*
         values:
           component_id: '{{ parameters.component_id }}'
           description: '{{ parameters.description }}'
           destination: '{{ parseRepoUrl parameters.repoUrl }}'
           owner: '{{ parameters.owner }}'
-
-    - id: fetch-docs
-      name: Fetch Docs
-      action: fetch:plain
-      input:
-        targetPath: ./community
-        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
 
     - id: publish
       name: Publish

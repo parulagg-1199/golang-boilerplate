@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: ${{values.component_id | dump}}
   description: ${{values.description | dump}}
-  annotations: 
+  annotations:
     github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
     backstage.io/techdocs-ref: dir:.
 spec:
