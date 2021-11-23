@@ -1,46 +1,100 @@
-# Getting Started with Create React App
+# Boilerplate Rest Example #
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Rest Example is an example for how to create REST APIs in **Golang** with proper file structure. Other features included:-
+* How to add middleware in routes
+* Configuration management using toml file
+* How to use in-house libraries(private packages) and how to update in vendor and Gopkg.toml file
+* Example of each database queries -> mongo, postgresql, mysql and redis database
+* JWT authentication with go-gin
+* Each component health check
+* Example of opentracing with go-gin api's
+* Proper code-commenting according to golang standards
 
-## Available Scripts
+## Requirements => ##
+1. Postgresql database to save accounts
+2. Mysql database to save user details
+3. Mongo database to save user informations
+4. Redis to save key-value data
+5. Jaeger tracer image
 
-In the project directory, you can run:
+## Environment Variables To be set to run=> ##
 
-### `yarn start`
+```
+// expose port
+export REST_EXAMPLE_HTTP_PORT="8001"
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+//admin account environment variables
+export REST_EXAMPLE_ADMIN_EMAIL="admin@boilerplate.com"
+export REST_EXAMPLE_ADMIN_PASS="boiler"
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+//private key for using authenticated apis over different services to transfer data using token
+export REST_EXAMPLE_PRIVATE_KEY="abc"
 
-### `yarn test`
+// postgresql environment variables
+export POSTGRESQL_DB_HOST="localhost"
+export POSTGRESQL_DB_PORT="5432"
+export POSTGRESQL_DB_USER="postgres"
+export POSTGRESQL_DB_PASS="1234"
+export POSTGRESQL_DB_NAME="rest_example"
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// mysql environment variables
+export MYSQL_DB_HOST="locahost"
+export MYSQL_DB_PORT="3306"
+export MYSQL_DB_USER="root"
+export MYSQL_DB_PASS=""
+export MYSQL_DB_NAME="rest_example"
 
-### `yarn build`
+// mongodb environment variables
+export MONGO_AUTH_DB_NAME="admin"
+export MONGO_DB_NAME="rest_example"
+export MONGO_DB_HOST="localhost:27017"
+export MONGO_DB_USER="username"
+export MONGO_DB_PASS="password"
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+// redis environment variables
+export REDIS_HOST="localhost"
+export REDIS_PORT="6379"
+export REDIS_PASS=""
+export REDIS_DB=0
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+//jaeger configuration
+export JAEGER_AGENT_HOST="localhost"
+export JAEGER_AGENT_PORT="6831"
+```
+## How to run the app ##
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Flags Information ###
 
-### `yarn eject`
+```
+i.    conf    ->  set configuration from toml file or environment variables (default "environment")
+ii.   file    ->  set path of toml file if configuration if set to toml
+iii.  logEnv  ->  set log environment as development or production (default "production") change in output result
+iv.   logType ->  set log format as tab space or json (default "tab space")
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 2. Configuration using environment variables ###
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+i.    Export above all environment variables
+ii.   Build the app or binary -> command -> `$ go install`
+iii.  Run the app or binary -> command -> `$GOPATH/bin/rest-example --conf=environment <set flags for logs setting>`
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (`webpack`, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 3. Configuration using TOML file ###
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+i.    Create a configuration toml file by taking reference from example.toml file
+ii.   Build the app or binary -> command -> `$ go install`
+iii.  Run the app or binary -> command -> `$GOPATH/bin/rest-example --conf=toml --file=<path of toml file>  <set flags for logs setting>`
+```
 
-## Learn More
+`Note :- for any help regarding flags, run this command '$GOPATH/bin/rest-example --help'`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## How to make changes in the project ##
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Clone the repo
+2. Install [go-dep](https://github.com/golang/dep) for updating any dependencies
+3. Update dependencies -> command -> `$dep ensure -update` (mainly for changes in-house libraries)
+4. Update the code if any.
+5. Test the changes locally.
+6. Push the changes and also push the changes of Gopkg.lock file and vendor folder also.
