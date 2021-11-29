@@ -6,7 +6,7 @@ metadata:
     A service for testing Backstage functionality. Configured for
     GitHub Actions.
   annotations:
-    github.com/project-slug: parulagg-1199/backstage-POC
+    github.com/project-slug: parulagg-1199/backstage-POC 
 spec:
   type: service
   owner: Parul Aggarwal
