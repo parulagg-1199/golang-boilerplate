@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: backstage-demo
+  description: The backstage sub-department
+spec:
+  type: sub-department
+  profile:
+    displayName: Backstage Demo
+    email: backstage.demo@example.com
+    picture: https://avatars.dicebear.com/api/identicon/backstage@example.com.svg?background=%23fff&margin=25
+  parent: infrastructure
+  children: [CloudOps, PlatformOps]
